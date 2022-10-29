@@ -107,6 +107,14 @@ def visualize(frames, annotations, plate=plate_blue, max_num=5):
 
 
 def parse_args(config_path):
+    """Parses through and extract the key-value pairs given in the config file.
+
+    Args:
+        config_path (str): file path to the config file 
+
+    Returns:
+        argparse.Namespace object: holds the key-value pairs given in config file
+    """
     config_file = open(config_path)
     config_args = yaml.load(config_file, Loader=yaml.FullLoader)
     
@@ -281,6 +289,14 @@ def pack_result(human_detection, result, img_h, img_w):
 
 
 def main(config_path):
+    """inference script which loads the model params and instantiates the model for
+    inferencing. Input video is passed into the model, and the output (bounding box and
+    action predictions) are overlaid on the input video and saved in the output video.
+
+    Args:
+        config_path (str): file path to the config file 
+
+    """
     args = parse_args(config_path = config_path)
     
     os.chdir("src/mmaction2")
