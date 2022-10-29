@@ -149,7 +149,7 @@ def parse_args(config_path):
         '--device', type=str, default=config_args['device'], help='CPU/CUDA device option')
     parser.add_argument(
         '--out-filename',
-        default='demo/stdet_demo.mp4',
+        default=config_args['out-filename'],
         help='output filename')
     parser.add_argument(
         '--predict-stepsize',
