@@ -109,7 +109,7 @@ Retain the key-value pairs in the table above in order to generate the video out
 
 ## 2. Video 2: People Fighting [(source)](https://www.pexels.com/video/men-of-different-race-having-an-argument-4821746/)
 
-[<img src="src/mmaction2/outputs/people_fighting_thumbnail.jpg" width="600">](src/mmaction2/outputs/people_fighting.mp4)
+[<img src="src/mmaction2/outputs/people_fighting_gif.gif" width="600">](src/mmaction2/outputs/people_fighting.mp4)
 
 - All 3 men in the video have been correctly identified, with tight bounding boxes. The human detector for this example video feed appears to be working well.
 - However, model has incorrectly predicted the pushing action of the man in blue on the man in red. This could indicate that the model is not yet adept at identifying possible instances of fighting, which is an important class in the context of security. 
