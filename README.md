@@ -62,7 +62,7 @@ pip install webcolors
 pip install moviepy
 
 # install mmaction2
-cd src/mmaction2
+cd action-recognition/src/mmaction2
 pip install -r requirements/build.txt
 pip install -v -e . 
 
