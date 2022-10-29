@@ -99,7 +99,7 @@ Retain the key-value pairs in the table above in order to generate the video out
 
 ## 1. Video 1: People Walking in Mall [(source)](https://www.pexels.com/video/people-walking-inside-a-shopping-mall-4750076/)
 
-[<img src="src/mmaction2/outputs/people_mall_thumbnail.jpg" width="600">](src/mmaction2/outputs/people_mall.mp4)
+[<img src="src/mmaction2/outputs/people_mall_gif.gif" width="600">](src/mmaction2/outputs/people_mall.mp4)
 
 ### Observations and Error analysis
 - Most humans within the video have been detected, with the correct action recognised (most are walking, but those who are standing have been correctly identified to be standing).
