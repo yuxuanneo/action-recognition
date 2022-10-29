@@ -4,7 +4,7 @@ checkpoint: 'https://download.openmmlab.com/mmaction/detection/ava/slowfast_kine
 det-config: 'configs/human_detection/yolov3_mobilenetv2_mstrain-416_300e_coco.py'
 det-checkpoint: 'https://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_mobilenetv2_mstrain-416_300e_coco/yolov3_mobilenetv2_mstrain-416_300e_coco_20210718_010823-f68a07b3.pth'
 det-score-thr: 0.3
-action-score-thr: 0.5
+action-score-thr: 0.3
 label-map: 'tools/data/ava/label_map.txt'
 predict-stepsize: 8 # default val from mmaction2
 output-stepsize: 4 # default val from mmaction2
