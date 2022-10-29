@@ -1,4 +1,4 @@
-video: 'inputs/people_fighting.mp4'
+video: 'inputs/people_mall.mp4'
 config: 'configs/detection/ava/slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb.py'
 checkpoint: 'https://download.openmmlab.com/mmaction/detection/ava/slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb/slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb-b987b516.pth'
 det-config: 'configs/human_detection/yolov3_mobilenetv2_mstrain-416_300e_coco.py'
@@ -9,5 +9,5 @@ label-map: 'tools/data/ava/label_map.txt'
 predict-stepsize: 8 # default val from mmaction2
 output-stepsize: 4 # default val from mmaction2
 output-fps: 6 # default val from mmaction2
-out-filename: 'outputs/people_fighting.mp4'
+out-filename: 'outputs/people_mall.mp4'
 device: 'cpu'
