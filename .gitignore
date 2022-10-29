@@ -3,6 +3,8 @@
 
 # Ignore .jpg images
 *.jpg
+# except those in output
+!src/mmaction2/outputs/*.jpg
 
 # Ignore .ipynb files
 *.ipynb
