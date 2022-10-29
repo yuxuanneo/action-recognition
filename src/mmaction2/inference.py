@@ -418,6 +418,5 @@ def main(config_path):
     tmp_frame_dir = osp.dirname(frame_paths[0])
     shutil.rmtree(tmp_frame_dir)
 
-
 if __name__ == '__main__':
     main(config_path='configs/mmaction.yaml')
