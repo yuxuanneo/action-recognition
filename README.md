@@ -1,7 +1,7 @@
 # 1. Introduction
 Implementation of a video-based Action Recognition model, meant to be used in the context of security and retail. The model that has been implemented is the SlowFast network, with YOLOv3 as the first stage human detector. Model has been implemented using the MMAction2 repository. 
 
-As the implementation is expected to run in real-time, FPS is an important consideration and I will actively take steps to improve FPS (sometimes at the expense of mAP), as will be explained in section 3, Choice of Model Implemented.
+As the implementation is expected to run in real-time, FPS is an important consideration and I will actively take steps to improve FPS (sometimes at the expense of mAP), as will be explained in 'section 3, Choice of Model Implemented'.
 
 # 2. MMAction2
 [MMAction2](https://github.com/open-mmlab/mmaction2/blob/master/README.md) is an open-source toolbox for video understanding based on PyTorch. It is a part of the OpenMMLab project.
@@ -18,9 +18,9 @@ MMAction2 has been chosen for the following reasons:
     - Crucially, the SlowFast model, which is the model we have implemented, is one of the models tested. This indicates that when the model is eventually finetuned for more specific use cases, we will be able to incur lower training costs when implemented in MMAction2 compared to other frameworks.  
 
 2. Easily configurable
-    - MMAction2 has been designed to be modular, where users can easily swap out modules to fulfil their respective use cases. 
+    - MMAction2 has been designed to be modular, where users can easily swap out modules to fulfil their respective use cases. I have leveraged on this customisability by introducing a config file (will be discussed in section 5), where users can swap between modules through a single line in the config file.  
     - Supports different methods for action recognition, including TSN and SlowFast.
-    - Even within the SlowFast implementation, there are also options to decide between different backbones (e.g. ResNet-50 vs ResNet-101) and different training data (e.g. AVA2.1 vs AVA2.2)
+    - Even within the SlowFast implementation, there is also an option to decide between different backbones (e.g. ResNet-50 vs ResNet-101) and different training data (e.g. AVA2.1 vs AVA2.2).
 
 3. Appropriate license
     - Licensed under the Apache License 2.0, which allows for commercial and private use. This is unlike other more restrictive license types which may disallow the use of the repository for profit. 
@@ -29,13 +29,13 @@ MMAction2 has been chosen for the following reasons:
 ## Action Recognition
 I have chosen the [SlowFast](https://openaccess.thecvf.com/content_ICCV_2019/html/Feichtenhofer_SlowFast_Networks_for_Video_Recognition_ICCV_2019_paper.html) framework for the action recognition task. The SlowFast network employs a Slow pathway, operating at a lower frame rate, to capture spatial semantics and a Fast pathway, operating at a high frame rate, to capture motion at fine temporal resolution. The two pathways are then fused by lateral connections. 
 
-There are a few variations of the SlowFast network that could be implemented throguh MMAction2, most notably, they are the  Slow-only and SlowFast with ResNet-50 backbone and SlowFast with ResNet-101 backbone. In a series of ablation experiments by the paper's authors, they found that relative to Slow-only, the SlowFast network significantly extends the performance at a small increase in computational cost. In fact, for certain implementations of the network, the SlowFast can even provide a higher accuracy at a reduced cost. Hence, I chose the SlowFast implementation instead of Slow-only due to the disproportionate improvement in mAP for a slight drop in FPS. The less deep ResNet-50 is chosen in favour of the deeper ResNet-101 for the backbone, to further reduce model complexity and to improve FPS.
+There are a few variations of the SlowFast network that could be implemented through MMAction2. Most notably, they are the  Slow-only and SlowFast with ResNet-50 backbone and SlowFast with ResNet-101 backbone. In a series of ablation experiments by the paper's authors, they found that relative to Slow-only, the SlowFast network significantly extends the performance at a small increase in computational cost. In fact, for certain implementations of the network, the SlowFast can even provide a higher accuracy at a reduced cost. Hence, I chose the SlowFast implementation instead of Slow-only due to the disproportionate improvement in mAP for a slight drop in FPS. The less deep ResNet-50 is chosen in favour of the deeper ResNet-101 for the backbone, to further reduce model complexity and to improve FPS.
 
 The model weights are then pre-trained on the Kinetics-400 dataset, then finetuned on AVA v2.2, which focuses on spatiotemporal localisation of human actions. The dataset contains 430 videos split into 235 for training, 64 for validation, and 131 for test. Each video has 15 minutes annotated in 1 second intervals and these videos are sourced from movies. 
 
-There are 80 classes in the dataset (although model evaluation is usually done on a subset of 60 classes instead). Some of the actions include common actions such as walking and standing and other actions that could raise security concerns such as fighting and pushing another person. The latter would be especially relevant in the context of security and retail. 
+There are 80 classes in the dataset (although model evaluation is usually done on a subset of 60 classes instead). Some of the actions include common actions, such as walking and standing, and other actions that could raise security concerns, such as fighting and pushing another person. The latter would be especially relevant in the context of security and retail. 
 
-As documented in the paper, when tested on AVA, the model boasts a higher test mAP than other state-of-the-art frameworks (e.g. I3D). Similarly, on the Charades dataset, the SlowFast models also outperformed the previous best number (by SRTG) by solid margins, while having a lower GFLOPs x views.
+As documented in the paper, when tested on AVA dataset, the model boasts a higher test mAP than other state-of-the-art frameworks (e.g. I3D). Similarly, on the Charades dataset, the SlowFast models also outperformed the previous best number (by SRTG) by solid margins, while having a lower GFLOPs x views.
 <br>
 
 ## Human Detector
@@ -46,8 +46,8 @@ The first stage human detector framework is implemented using [YOLOv3](https://a
     - Conversely, YOLOv3 only uses a single convolutional network to simultaneously predict the bounding boxes and class probabilities of the boxes. 
     - Hence, for our use case, where FPS is deemed to be important, I have prioritised inference speed ahead of mAP, and have chosen the YOLOv3 framework as the human detector framework. 
 - YOLOv3 [MobileNetV2](https://arxiv.org/abs/1704.04861) vs YOLOv3 DarkNet-53
-    - The choice of backbone in object detection models are also important. Due to the small and lightweight nature of Mobilenet, when tested on the SSD 300 and Faster R-CNN frameworks, it has been found to achieve comparable mAP at a fraction of the computational complexity and model size. 
-    - Hence, the inference speed of YOLOv3 can be further sped up with the swapping of the backbone to MobileNetV2. This observation has also been **emphirically tested for my particular implementation- the FPS was found to be better for the mobilenet backbone relative to the darknet backbone.** 
+    - The choice of backbone in object detection models is also important. Due to the small and lightweight nature of Mobilenet, when tested on the SSD 300 and Faster R-CNN frameworks, it has been found to achieve comparable mAP at a fraction of the computational complexity and model size. 
+    - Hence, the inference speed of YOLOv3 can be further sped up with the swapping of the backbone to MobileNetV2. **I have also emphirically tested this observation in the context of our Action Recognition model- the FPS was found to be better for the mobilenet backbone relative to the darknet backbone.** 
 
 # 4. Setting Up of Virtual Environment 
 ```
@@ -81,7 +81,7 @@ The model has also been conveniently implemented with a [config file](configs/mm
 | ------------- | ------------- | ------------- |
 | video  | 'inputs/people_fighting.mp4'  | Video to be fed into the model |
 | config  | 'configs/detection/ava/slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb.py'  | The action detection config file path |
-| checkpoint  | 'https://download.openmmlab.com/mmaction/detection/ava/ slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb/ slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb-b987b516.pth'  | The action detection checkpoint URL |
+| checkpoint  | 'https://download.openmmlab.com/mmaction/detection/ava/slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb/slowfast_kinetics_pretrained_r50_8x8x1_cosine_10e_ava22_rgb-b987b516.pth'  | The action detection checkpoint URL |
 | det-config  | 'configs/human_detection/yolov3_mobilenetv2_mstrain-416_300e_coco.py'  | The human detection config file path|
 | det-checkpoint  | 'https://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_mobilenetv2_mstrain-416_300e_coco/yolov3_mobilenetv2_mstrain-416_300e_coco_20210718_010823-f68a07b3.pth'  | The human detection checkpoint URL |
 | det-score-thr  | 0.3  | The score threshold for human detection |
@@ -95,7 +95,7 @@ The model has also been conveniently implemented with a [config file](configs/mm
 
 Most importantly, if the user seeks to swap out the model architectures, they can do so through the 'config', 'checkpoint', 'det-config' and 'det-checkpoint' keys. The former 2 keys support any of the frameworks provided [here](https://github.com/open-mmlab/mmaction2/tree/master/configs/detection), while the latter 2 support any object detection framework that is given [here](https://github.com/open-mmlab/mmdetection/tree/master/configs/yolo).
 
-Retain the key-value pairs in the table above in order to generate the video outputs given below.
+Retain the key-value pairs in the table above to replicate the video outputs given below.
 
 ## 1. Video 1: People Walking in Mall [(source)](https://www.pexels.com/video/people-walking-inside-a-shopping-mall-4750076/)
 
@@ -104,7 +104,7 @@ Retain the key-value pairs in the table above in order to generate the video out
 ### Observations and Error analysis
 - Most humans within the video have been detected, with the correct action recognised (most are walking, but those who are standing have been correctly identified to be standing).
 - On the left side of the video feed, there are also 3 men dressed in military gear with one of them holding a luggage. The holding of the luggage has also been identified.
-- Some occluded humans are not picked up, especially those at the top of the video exiting the mall. We could improve on this by setting a lower threshold for the human detection. Another solution could be to train the human detecor on more instances of occluded humans, in order for the human detector to better generalise to real world conditions.
+- Some occluded humans are not picked up, especially those at the top of the video exiting the mall. We could improve on this by setting a lower threshold for the human detection. Another solution could be to train the human detector on more instances of occluded humans, in order for the human detector to better generalise to real world conditions.
 - When I tested the YOLOV3 detector with the MobileNet backbone, the original default human confidence threshold of 0.9 was too high and many of the humans were not detected. This is due to the lower class confidence scores predicted, which can be circumvented by reducing the confidence threshold to 0.3. Too low a threshold would have the effect of including even non-humans in the prediction, which would be wrong. 
 
 ## 2. Video 2: People Fighting [(source)](https://www.pexels.com/video/men-of-different-race-having-an-argument-4821746/)
