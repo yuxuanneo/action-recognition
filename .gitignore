@@ -7,6 +7,9 @@
 # Ignore .ipynb files
 *.ipynb
 
+# Ignore lit review reading materials
+lit_review/*
+
 ####################
 ### Common files ###
 ####################
